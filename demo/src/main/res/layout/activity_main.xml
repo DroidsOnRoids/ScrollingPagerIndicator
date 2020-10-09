@@ -89,8 +89,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/recycler"
             app:spi_dotColor="@color/dotNormal"
-            app:spi_dotSelectedColor="@color/dotHighlight"
-            app:spi_orientation="vertical" />
+            app:spi_dotSelectedColor="@color/dotHighlight" />
 
         <TextView
             android:id="@+id/page_count_label"

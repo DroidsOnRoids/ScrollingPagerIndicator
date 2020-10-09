@@ -79,7 +79,7 @@ public class ScrollingPagerIndicator extends View {
         dotColor = attributes.getColor(R.styleable.ScrollingPagerIndicator_spi_dotColor, 0);
         selectedDotColor = attributes.getColor(R.styleable.ScrollingPagerIndicator_spi_dotSelectedColor, dotColor);
         dotNormalSize = attributes.getDimensionPixelSize(R.styleable.ScrollingPagerIndicator_spi_dotSize, 0);
-        dotSelectedWidth = dotNormalSize * 2;
+        dotSelectedWidth = attributes.getDimensionPixelSize(R.styleable.ScrollingPagerIndicator_spi_dotSelectedWidth, dotNormalSize);
 
         spaceBetweenDotCenters = attributes.getDimensionPixelSize(R.styleable.ScrollingPagerIndicator_spi_dotSpacing, 0) + dotNormalSize;
         looped = attributes.getBoolean(R.styleable.ScrollingPagerIndicator_spi_looped, false);
