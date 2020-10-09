@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.android.tools.build:gradle:4.0.2'
     }
 }
 
@@ -27,8 +27,8 @@ ext {
     compileSdk = 28
     targetSdk = 28
 
-    appCompatVersion = "1.1.0"
-    constraintLayoutVersion = "1.1.3"
+    appCompatVersion = "1.2.0"
+    constraintLayoutVersion = "2.0.2"
     viewPagerVersion = "1.0.0"
     viewPager2Version = "1.0.0"
     cardViewVersion = "1.0.0"
