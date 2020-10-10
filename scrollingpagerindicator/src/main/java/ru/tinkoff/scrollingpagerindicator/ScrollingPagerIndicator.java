@@ -5,17 +5,14 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -239,29 +236,8 @@ public class ScrollingPagerIndicator extends View {
      *
      * @param recyclerView recycler view to attach
      */
-    public void attachToRecyclerView(@NonNull RecyclerView recyclerView) {
-        attachToPager(recyclerView, new RecyclerViewAttacher());
-    }
-
-    /**
-     * Attaches indicator to RecyclerView. Use this method if current page of the recycler isn't centered.
-     * All pages must have the same width.
-     * Like this:
-     * <p>
-     * +-|----------------------------+
-     * | +--------+  +--------+  +----|
-     * | | current|  |        |  |    |
-     * | |  page  |  |        |  |    |
-     * | +--------+  +--------+  +----|
-     * +-|----------------------------+
-     * | currentPageOffset
-     * |
-     *
-     * @param recyclerView      recycler view to attach
-     * @param currentPageOffset x coordinate of current view left corner/top relative to recycler view
-     */
-    public void attachToRecyclerView(@NonNull RecyclerView recyclerView, int currentPageOffset) {
-        attachToPager(recyclerView, new RecyclerViewAttacher(currentPageOffset));
+    public void attachToRecyclerView(@NonNull RecyclerView recyclerView, int actualItemCount) {
+        attachToPager(recyclerView, new RecyclerViewAttacher(actualItemCount));
     }
 
     /**

@@ -23,6 +23,7 @@ public class RecyclerViewAttacher implements ScrollingPagerIndicator.PagerAttach
 
     private final boolean centered;
     private final int currentPageOffset;
+    private final int actualItemCount;
 
     private int measuredChildWidth;
     private int measuredChildHeight;
@@ -38,31 +39,12 @@ public class RecyclerViewAttacher implements ScrollingPagerIndicator.PagerAttach
      * |   |  |      page      |  |   |
      * |---+  +----------------+  +---|
      * +------------------------------+
+     * @param actualItemCount
      */
-    public RecyclerViewAttacher() {
+    public RecyclerViewAttacher(int actualItemCount) {
+        this.actualItemCount = actualItemCount;
         currentPageOffset = 0; // Unused when centered
         centered = true;
-    }
-
-    /**
-     * Use this constructor if current page in recycler isn't centered.
-     * All pages must have the same width.
-     * Like this:
-     * <p>
-     * +-|----------------------------+
-     * | +--------+  +--------+  +----|
-     * | | current|  |        |  |    |
-     * | |  page  |  |        |  |    |
-     * | +--------+  +--------+  +----|
-     * +-|----------------------------+
-     * | currentPageOffset
-     * |
-     *
-     * @param currentPageOffset x coordinate of current view left corner/top relative to recycler view.
-     */
-    public RecyclerViewAttacher(int currentPageOffset) {
-        this.currentPageOffset = currentPageOffset;
-        this.centered = false;
     }
 
     @Override
@@ -77,11 +59,11 @@ public class RecyclerViewAttacher implements ScrollingPagerIndicator.PagerAttach
         this.recyclerView = pager;
         this.attachedAdapter = pager.getAdapter();
         this.indicator = indicator;
+        indicator.setDotCount(actualItemCount);
 
         dataObserver = new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
-                indicator.setDotCount(attachedAdapter.getItemCount());
                 updateCurrentOffset();
             }
 
@@ -111,7 +93,6 @@ public class RecyclerViewAttacher implements ScrollingPagerIndicator.PagerAttach
             }
         };
         attachedAdapter.registerAdapterDataObserver(dataObserver);
-        indicator.setDotCount(attachedAdapter.getItemCount());
         updateCurrentOffset();
 
         scrollListener = new RecyclerView.OnScrollListener() {
@@ -119,10 +100,9 @@ public class RecyclerViewAttacher implements ScrollingPagerIndicator.PagerAttach
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && isInIdleState()) {
                     int newPosition = findCompletelyVisiblePosition();
-                    if (newPosition != RecyclerView.NO_POSITION) {
-                        indicator.setDotCount(attachedAdapter.getItemCount());
+                    if (newPosition != RecyclerView.NO_POSITION && actualItemCount > 0) {
                         if (newPosition < attachedAdapter.getItemCount()) {
-                            indicator.setCurrentPosition(newPosition);
+                            indicator.setCurrentPosition(newPosition % actualItemCount);
                         }
                     }
                 }
@@ -168,8 +148,8 @@ public class RecyclerViewAttacher implements ScrollingPagerIndicator.PagerAttach
             offset = (getCurrentFrameBottom() - firstView.getY()) / firstView.getMeasuredHeight();
         }
 
-        if (offset >= 0 && offset <= 1 && position < itemCount) {
-            indicator.onPageScrolled(position, offset);
+        if (offset >= 0 && offset <= 1 && position < itemCount && actualItemCount > 0) {
+            indicator.onPageScrolled(position % actualItemCount, offset);
         }
     }
 

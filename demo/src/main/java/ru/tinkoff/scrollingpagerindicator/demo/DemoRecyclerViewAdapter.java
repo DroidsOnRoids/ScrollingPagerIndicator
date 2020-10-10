@@ -35,12 +35,17 @@ public class DemoRecyclerViewAdapter extends RecyclerView.Adapter<DemoRecyclerVi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.title.setText(String.valueOf(position));
+        holder.title.setText(String.valueOf(position % count));
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position % count);
     }
 
     @Override
     public int getItemCount() {
-        return count;
+        return Integer.MAX_VALUE;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
